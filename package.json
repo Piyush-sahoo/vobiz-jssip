@@ -2,7 +2,7 @@
   "name": "vobiz-jssip",
   "title": "vobiz-jssip",
   "description": "Vobiz Javascript SIP library",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "homepage": "https://vobiz.ai",
   "contributors": [],
   "types": "index.d.ts",
