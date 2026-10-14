@@ -15802,7 +15802,7 @@
             const state = this._connection.iceConnectionState;
 
             // TODO: Do more with different states.
-            // Plivo patch for disable RTP timeout
+            // Vobiz patch: do not terminate the session on RTP timeout
             if (state === "failed") {
               // this.terminate({
               //   cause         : JsSIP_C.causes.RTP_TIMEOUT,
