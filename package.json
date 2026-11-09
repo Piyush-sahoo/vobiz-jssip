@@ -33,10 +33,10 @@
     "debug": "^4.1.1",
     "events": "^3.1.0",
     "sdp-transform": "^2.14.0",
-    "webrtc-adapter": "^7.7.0"
+    "webrtc-adapter": "^9.0.6"
   },
   "peerDependencies": {
-    "webrtc-adapter": "^7.7.0"
+    "webrtc-adapter": "^9.0.6"
   },
   "files": [
     "dist/",
