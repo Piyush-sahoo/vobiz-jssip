@@ -1,0 +1,5 @@
+# Changes to the bundles, CI and release config need a maintainer review.
+*                   @Piyush-sahoo
+/dist/              @Piyush-sahoo
+/.github/           @Piyush-sahoo
+/package.json       @Piyush-sahoo

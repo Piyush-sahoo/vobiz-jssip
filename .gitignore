@@ -1,0 +1,8 @@
+node_modules/
+test/e2e/node_modules/
+test/e2e/matrix-results.json
+*.tgz
+pack.json
+.DS_Store
+.env
+.env.*

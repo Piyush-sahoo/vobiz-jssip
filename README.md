@@ -1,5 +1,11 @@
 # vobiz-jssip
 
+[![CI](https://github.com/vobiz-ai/vobiz-jssip/actions/workflows/ci.yml/badge.svg)](https://github.com/vobiz-ai/vobiz-jssip/actions/workflows/ci.yml)
+[![Security](https://github.com/vobiz-ai/vobiz-jssip/actions/workflows/security.yml/badge.svg)](https://github.com/vobiz-ai/vobiz-jssip/actions/workflows/security.yml)
+[![npm](https://img.shields.io/npm/v/vobiz-jssip)](https://www.npmjs.com/package/vobiz-jssip)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/vobiz-ai/vobiz-jssip/badge)](https://scorecard.dev/viewer/?uri=github.com/vobiz-ai/vobiz-jssip)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+
 The SIP-over-WebSocket library behind the [Vobiz browser SDK](https://www.npmjs.com/package/vobiz-webrtc-sdk)
 (`vobiz-webrtc-sdk`). It is a fork of [JsSIP](https://jssip.net/) 3.x (MIT), shipped as a prebuilt bundle.
 
@@ -91,13 +97,15 @@ Live call tests (real calls through the Vobiz platform) are in [`test/e2e`](test
 
 ## Releasing
 
-1. Change both `dist/vobiz-jssip.js` and `dist/vobiz-jssip.min.js`, and add a unit test.
-2. `npm test`, then run the live tests in `test/e2e` (at least `webrtc-to-pstn` and `webrtc-to-webrtc`).
-3. Bump `version` in `package.json`, merge, then `npm publish` from a clean checkout of `main`.
-4. In `vobiz-webrtc-sdk`, bump the `vobiz-jssip` dependency, rebuild and publish the SDK.
+Releases are published from GitHub Actions with npm trusted publishing and provenance: create a
+GitHub release `vX.Y.Z` matching `package.json` and the `Publish to npm` workflow does the rest. Full
+steps are in [CONTRIBUTING.md](CONTRIBUTING.md#releasing-maintainers); changes are listed in
+[CHANGELOG.md](CHANGELOG.md). Verify an installed copy with `npm audit signatures`.
 
-`files` in `package.json` limits the npm package to `dist/`, `index.d.ts`, `LICENSE` and this README;
-tests are not published.
+## Contributing and security
+
+See [CONTRIBUTING.md](CONTRIBUTING.md). Report vulnerabilities privately as described in
+[SECURITY.md](SECURITY.md).
 
 ## License
 

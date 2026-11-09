@@ -1,0 +1,57 @@
+name: Bug report
+description: Something in vobiz-jssip behaves wrongly (calls, hold, reconnect, registration)
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Security problems: do not file an issue, see SECURITY.md.
+        Remove credentials, auth tokens and customer phone numbers from anything you paste.
+  - type: input
+    id: version
+    attributes:
+      label: vobiz-jssip version
+      description: From package.json, or `VobizJsSIP.version` / the SDK version if you use vobiz-webrtc-sdk
+      placeholder: 1.0.2
+    validations:
+      required: true
+  - type: input
+    id: sdk
+    attributes:
+      label: vobiz-webrtc-sdk version (if used)
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and OS
+      placeholder: Chrome 131 on macOS 15
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options: [Registration, Outbound call, Inbound call, Hold / resume, Renegotiation / ICE restart, Network change / reconnect, DTMF, Other]
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Log in as …
+        2. Call …
+        3. session.hold()
+    validations:
+      required: true
+  - type: textarea
+    id: trace
+    attributes:
+      label: SIP trace / logs
+      description: WebSocket frames (DevTools > Network > WS) or JsSIP debug output (`localStorage.debug = 'JsSIP:*'`). Call-ID helps us find it on the platform.
+      render: text
