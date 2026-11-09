@@ -35,7 +35,7 @@ Do not name other vendors or competitors in code, comments, commit messages or P
    [`test/e2e`](test/e2e/README.md) and paste the summary in the PR. At least `webrtc-to-pstn` and
    `webrtc-to-webrtc`.
 6. Add a line to `CHANGELOG.md` under **Unreleased**.
-7. Open the PR. CI (tests on Node 20/22/24, package contents check) and the Security workflow
+7. Open the PR. CI (tests on Node 22/24/26, package contents check) and the Security workflow
    (CodeQL, dependency review, npm audit) must pass, and a code owner must approve.
 
 ## Commit messages

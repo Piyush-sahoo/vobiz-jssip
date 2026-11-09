@@ -81,7 +81,7 @@ browser SDK keep their behaviour.
 ## Testing
 
 ```bash
-npm test                 # unit tests, no network (Node 18+)
+npm test                 # unit tests, no network (Node 22+)
 ```
 
 `test/unit/reinvite.test.js` runs every re-INVITE case against **both** `dist/vobiz-jssip.js` and
