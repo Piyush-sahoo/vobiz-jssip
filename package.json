@@ -2,11 +2,14 @@
   "name": "vobiz-jssip",
   "title": "vobiz-jssip",
   "description": "Vobiz Javascript SIP library",
-  "version": "1.0.1",
-  "homepage": "https://vobiz.ai",
+  "version": "1.0.2",
+  "homepage": "https://github.com/vobiz-ai/vobiz-jssip#readme",
   "contributors": [],
   "types": "index.d.ts",
   "main": "dist/vobiz-jssip.min.js",
+  "scripts": {
+    "test": "node --test 'test/unit/*.test.js'"
+  },
   "keywords": [
     "sip",
     "websocket",
@@ -19,10 +22,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Piyush-sahoo/vobiz-jssip.git"
+    "url": "git+https://github.com/vobiz-ai/vobiz-jssip.git"
   },
   "bugs": {
-    "url": "https://github.com/Piyush-sahoo/vobiz-jssip/issues"
+    "url": "https://github.com/vobiz-ai/vobiz-jssip/issues"
   },
   "dependencies": {
     "@types/debug": "^4.1.5",
