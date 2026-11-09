@@ -1,0 +1,12 @@
+{
+  "name": "vobiz-jssip-e2e",
+  "private": true,
+  "description": "Live call tests for vobiz-jssip: drives Vobiz-RTC-demo in headless Chromium and raw SIP endpoints against the Vobiz platform",
+  "scripts": {
+    "single": "node run.js",
+    "matrix": "node matrix.js"
+  },
+  "dependencies": {
+    "playwright-core": "1.65.0"
+  }
+}
