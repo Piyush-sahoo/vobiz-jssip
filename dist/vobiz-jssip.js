@@ -15358,6 +15358,13 @@
 
           this._setLocalMediaStatus();
 
+          // Same rule as _sendReinvite: an explicit isNetworkChange wins, otherwise an
+          // iceRestart offer is treated as a network change.
+          const isNetworkChange =
+            options.isNetworkChange !== undefined
+              ? Boolean(options.isNetworkChange)
+              : Boolean(rtcOfferConstraints && rtcOfferConstraints.iceRestart);
+
           if (options.useUpdate) {
             this._sendUpdate({
               sdpOffer: true,
@@ -15366,7 +15373,9 @@
               extraHeaders: options.extraHeaders,
             });
           } else {
-            if (!this._transport.isConnecting() && !this._ua.isRegistering() && !options.sendReinviteOnly) {
+            // Only a network-change renegotiation resets the WebSocket. Resetting it for a
+            // regular re-INVITE would send the INVITE on a closed socket and end the call.
+            if (isNetworkChange && !this._transport.isConnecting() && !this._ua.isRegistering() && !options.sendReinviteOnly) {
               this._transport.disconnect(true);
               this._transport.connect();
             }
@@ -15374,6 +15383,7 @@
               eventHandlers,
               rtcOfferConstraints,
               extraHeaders: options.extraHeaders,
+              isNetworkChange,
             });
           }
 
@@ -15658,6 +15668,15 @@
           // No established yet.
           if (!this._dialog) {
             debug("_isReadyToReOffer() | session not established yet");
+
+            return false;
+          }
+
+          // A network-change re-INVITE is still waiting for ICE candidates / transport.
+          if (this.inviteInterval != null) {
+            debug(
+              "_isReadyToReOffer() | a network-change re-INVITE is pending"
+            );
 
             return false;
           }
@@ -16734,6 +16753,13 @@
           const eventHandlers = options.eventHandlers || {};
           const rtcOfferConstraints =
             options.rtcOfferConstraints || this._rtcOfferConstraints || null;
+          // Only a network-change re-INVITE (ICE restart after a reconnect) needs to
+          // wait for fresh ICE candidates and retry. Callers can say so explicitly with
+          // `isNetworkChange`; otherwise an explicit iceRestart offer is treated as one.
+          const isNetworkChange =
+            options.isNetworkChange !== undefined
+              ? Boolean(options.isNetworkChange)
+              : Boolean(options.rtcOfferConstraints && options.rtcOfferConstraints.iceRestart);
 
           let succeeded = false;
 
@@ -16746,6 +16772,53 @@
               `Session-Expires: ${this._sessionTimers.currentExpires};refresher=${this._sessionTimers.refresher ? "uac" : "uas"
               }`
             );
+          }
+
+          // Regular re-INVITE (hold/unhold, renegotiate, session refresh): build the
+          // offer and send it right away. ICE gathering is already complete on a
+          // connected call, so waiting for new candidates would never send it.
+          if (!isNetworkChange) {
+            // A pending network-change re-INVITE refreshes the session anyway; sending a
+            // second INVITE now would collide with it (491).
+            if (this.inviteInterval != null) {
+              debug("sendReinvite() | network-change re-INVITE pending, skipping");
+
+              return;
+            }
+
+            this._connectionPromiseQueue = this._connectionPromiseQueue
+              .then(() => this._createLocalDescription("offer", rtcOfferConstraints))
+              .then((sdp) => {
+                sdp = this._mangleOffer(sdp);
+
+                this.sendRequest(JsSIP_C.INVITE, {
+                  extraHeaders,
+                  body: sdp,
+                  eventHandlers: {
+                    onSuccessResponse: (response) => {
+                      onSucceeded.call(this, response);
+                      succeeded = true;
+                    },
+                    onErrorResponse: (response) => {
+                      onFailed.call(this, response);
+                    },
+                    onTransportError: () => {
+                      this.onTransportError(); // Do nothing because session ends.
+                    },
+                    onRequestTimeout: () => {
+                      this.onRequestTimeout(); // Do nothing because session ends.
+                    },
+                    onDialogError: () => {
+                      this.onDialogError(); // Do nothing because session ends.
+                    },
+                  },
+                });
+              })
+              .catch(() => {
+                onFailed.call(this);
+              });
+
+            return;
           }
 
           this._connectionPromiseQueue = this._connectionPromiseQueue
@@ -21044,7 +21117,8 @@ ${this._contact};expires=${this._expires}${this._extraContactParams}`);
 
                 this._sessions[idx]._sendReinvite({
                   eventHandlers,
-                  rtcOfferConstraints: { iceRestart: true }
+                  rtcOfferConstraints: { iceRestart: true },
+                  isNetworkChange: true
                 }, this._sessions[idx]);
 
                 return;
