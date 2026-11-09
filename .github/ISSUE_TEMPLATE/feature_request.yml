@@ -1,0 +1,20 @@
+name: Feature request
+description: Suggest a change to vobiz-jssip
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What are you trying to do, and what gets in the way?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+  - type: textarea
+    id: upstream
+    attributes:
+      label: Upstream JsSIP
+      description: Does upstream JsSIP already do this? Link the code or issue if so.

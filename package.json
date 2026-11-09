@@ -8,7 +8,7 @@
   "types": "index.d.ts",
   "main": "dist/vobiz-jssip.min.js",
   "scripts": {
-    "test": "node --test 'test/unit/*.test.js'"
+    "test": "node --test test/unit/reinvite.test.js"
   },
   "keywords": [
     "sip",
@@ -43,5 +43,16 @@
     "index.d.ts",
     "LICENSE",
     "README.md"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": ">=22",
+      "onFail": "warn"
+    }
+  }
 }
